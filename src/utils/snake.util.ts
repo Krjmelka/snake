@@ -1,36 +1,73 @@
-import {EDirection, TSnakePosition} from "../components/Field/types";
+import {EDirection, TSnakePosition, TSnake, TPosition} from "../components/Field/types";
+import _, { isEqual } from 'lodash'
 
 export const calculateSnakeMove = (
-  snakePosition: TSnakePosition,
+  snakeData: TSnake,
   gridSize: number,
-  moveDirection: EDirection
-): TSnakePosition => {
+  moveDirection: EDirection,
+  target: TPosition | null,
+): TSnake => {
+  const snakeHeadPosition = snakeData[snakeData.length - 1]
   switch (moveDirection) {
     case EDirection.ArrowUp:
-      if (snakePosition.y === 1) {
-        return {...snakePosition};
+      if (snakeHeadPosition.y === 1) {
+        return [...snakeData];
       } else {
-        return {...snakePosition, y: snakePosition.y - 1};
+        const updatedSnakeHeadPosition = {...snakeHeadPosition, y: snakeHeadPosition.y - 1}
+        if(_.some(snakeData, updatedSnakeHeadPosition)) {
+          return [...snakeData]
+        }
+        if(target && isEqual(updatedSnakeHeadPosition, target)) {
+          return [...snakeData, target]
+        } 
+        return updateSnakeBody(snakeData, updatedSnakeHeadPosition);
       }
     case EDirection.ArrowDown:
-      if (snakePosition.y === gridSize) {
-        return {...snakePosition};
+      if (snakeHeadPosition.y === gridSize) {
+        return [...snakeData];
       } else {
-        return {...snakePosition, y: snakePosition.y + 1};
+        const updatedSnakeHeadPosition = {...snakeHeadPosition, y: snakeHeadPosition.y + 1}
+        if(_.some(snakeData, updatedSnakeHeadPosition)) {
+          return [...snakeData]
+        }
+        if(target && isEqual(updatedSnakeHeadPosition, target)) {
+          return [...snakeData, target]
+        }
+        return updateSnakeBody(snakeData, updatedSnakeHeadPosition);
       }
     case EDirection.ArrowLeft:
-      if (snakePosition.x === 1) {
-        return {...snakePosition};
+      if (snakeHeadPosition.x === 1) {
+        return [...snakeData];
       } else {
-        return {...snakePosition, x: snakePosition.x - 1};
+        const updatedSnakeHeadPosition = {...snakeHeadPosition, x: snakeHeadPosition.x - 1}
+        if(_.some(snakeData, updatedSnakeHeadPosition)) {
+          return [...snakeData]
+        }
+        if(target && isEqual(updatedSnakeHeadPosition, target)) {
+          return [...snakeData, target]
+        }
+        return updateSnakeBody(snakeData, updatedSnakeHeadPosition);
       }
     case EDirection.ArrowRight:
-      if (snakePosition.x === gridSize) {
-        return {...snakePosition};
+      if (snakeHeadPosition.x === gridSize) {
+        return [...snakeData];
       } else {
-        return {...snakePosition, x: snakePosition.x + 1};
+        const updatedSnakeHeadPosition = {...snakeHeadPosition, x: snakeHeadPosition.x + 1}
+        if(_.some(snakeData, updatedSnakeHeadPosition)) {
+          return [...snakeData]
+        }
+        if(target && isEqual(updatedSnakeHeadPosition, target)) {
+          return [...snakeData, target]
+        }
+        return updateSnakeBody(snakeData, updatedSnakeHeadPosition);
       }
     default:
-      return {...snakePosition};
+      return [...snakeData];
   }
 };
+
+const updateSnakeBody = (snakeData: TSnake, newSnakeHead: TSnakePosition) => {
+  snakeData.push(newSnakeHead)
+  snakeData.shift()
+  return [...snakeData]
+}
