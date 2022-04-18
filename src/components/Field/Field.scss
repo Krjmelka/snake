@@ -1,0 +1,22 @@
+.field {
+  width: var(--field-size);
+  height: var(--field-size);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.field-svg {
+  height: 100%;
+  svg {
+    background-color: grey;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    @media (min-aspect-ratio: 1/1) {
+      width: auto;
+      height: 100%;
+    }
+  }
+}
